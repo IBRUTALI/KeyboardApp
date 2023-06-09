@@ -16,7 +16,9 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
-    onTestClicked: () -> Unit
+    onTestClicked: () -> Unit,
+    onInstallClicked: () -> Unit,
+    onButtonClicked: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -27,13 +29,20 @@ fun MainScreen(
         val openDialog = remember { mutableStateOf(false) }
 
         Button(
-            onClick = { openDialog.value = true }
+            onClick = {
+                openDialog.value = true
+                onButtonClicked.invoke()
+            }
         ) {
             Text(text = "Change system keyboard")
         }
 
         if (openDialog.value) {
-            CustomAlertDialog(openDialog = openDialog, onTestClicked = onTestClicked)
+            CustomAlertDialog(
+                openDialog = openDialog,
+                onTestClicked = onTestClicked,
+                onInstallClicked = onInstallClicked
+            )
         }
     }
 }
@@ -42,15 +51,19 @@ fun MainScreen(
 fun CustomAlertDialog(
     modifier: Modifier = Modifier,
     openDialog: MutableState<Boolean>,
-    onTestClicked: () -> Unit
+    onTestClicked: () -> Unit,
+    onInstallClicked: () -> Unit
 ) {
     AlertDialog(
         onDismissRequest = { openDialog.value = false },
         title = { Text(text = "Change system keyboard") },
         text = { Text(text = "Keyboard options") },
         confirmButton = {
-            Button(onClick = { openDialog.value = false }) {
-                Text(text = "Install keyboard")
+            Button(onClick = {
+                openDialog.value = false
+                onInstallClicked.invoke()
+            }) {
+                Text(text = "Install/Uninstall keyboard")
             }
         },
         dismissButton = {
@@ -58,7 +71,7 @@ fun CustomAlertDialog(
                 openDialog.value = false
                 onTestClicked.invoke()
             }) {
-                Text(text = "Test keyboard")
+                Text(text = "Test")
             }
         }
     )
