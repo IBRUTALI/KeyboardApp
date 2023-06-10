@@ -12,6 +12,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.keyboardapp.R
 
 @Composable
 fun MainScreen(
@@ -41,7 +43,11 @@ fun MainScreen(
             CustomAlertDialog(
                 openDialog = openDialog,
                 onTestClicked = onTestClicked,
-                onInstallClicked = onInstallClicked
+                onInstallClicked = onInstallClicked,
+                title = stringResource(R.string.change_system_keyboard),
+                text = stringResource(R.string.keyboard_options),
+                confirmText = stringResource(R.string.install_keyboard),
+                dismissText = stringResource(R.string.test),
             )
         }
     }
@@ -52,18 +58,22 @@ fun CustomAlertDialog(
     modifier: Modifier = Modifier,
     openDialog: MutableState<Boolean>,
     onTestClicked: () -> Unit,
-    onInstallClicked: () -> Unit
+    onInstallClicked: () -> Unit,
+    title: String? = null,
+    text: String? = null,
+    confirmText: String,
+    dismissText: String
 ) {
     AlertDialog(
         onDismissRequest = { openDialog.value = false },
-        title = { Text(text = "Change system keyboard") },
-        text = { Text(text = "Keyboard options") },
+        title = title?.let { { Text(text = title) } },
+        text = text?.let { { Text(text = text) } },
         confirmButton = {
             Button(onClick = {
                 openDialog.value = false
                 onInstallClicked.invoke()
             }) {
-                Text(text = "Install/Uninstall keyboard")
+                Text(text = confirmText)
             }
         },
         dismissButton = {
@@ -71,7 +81,7 @@ fun CustomAlertDialog(
                 openDialog.value = false
                 onTestClicked.invoke()
             }) {
-                Text(text = "Test")
+                Text(text = dismissText)
             }
         }
     )
