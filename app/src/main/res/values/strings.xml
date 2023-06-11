@@ -13,4 +13,6 @@
     <string name="keyboard_options">Keyboard options</string>
     <string name="install_keyboard">Install/Uninstall keyboard</string>
     <string name="test">Test</string>
+    <string name="change_color">Change color</string>
+    <string name="enter_somehting">Enter something:)</string>
 </resources>

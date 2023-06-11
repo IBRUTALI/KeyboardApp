@@ -5,7 +5,7 @@ import android.view.KeyEvent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsDraggedAsState
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -30,12 +30,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.keyboardapp.R
 import com.example.keyboardapp.service.KeyboardService
+import kotlinx.coroutines.*
 
 @Composable
 fun KeyboardKey(
     keyboardKey: String,
     modifier: Modifier,
-    isCaps: MutableState<IsCaps>
+    keyboardState: MutableState<KeyboardState>,
+    keyColor: Color = Color.Blue,
+    textColor: Color = Color.Black
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed = interactionSource.collectIsPressedAsState()
@@ -47,7 +50,9 @@ fun KeyboardKey(
         "SHIFT" to R.drawable.shfit_double_caps,
         "delete" to R.drawable.baseline_backspace_24,
         "enter" to R.drawable.baseline_send,
-        " " to R.drawable.spacebar_filled
+        " " to R.drawable.spacebar_filled,
+        "123" to R.drawable.baseline_123,
+        "ABC" to R.drawable.baseline_abc
     )
     Box(
         modifier = modifier
@@ -56,8 +61,9 @@ fun KeyboardKey(
         contentAlignment = Alignment.BottomCenter,
     ) {
         Card(
+            elevation = 5.dp,
             modifier = modifier,
-            elevation = 5.dp
+            backgroundColor = keyColor
         ) {
             if (iconMap.containsKey(keyboardKey)) {
                 iconMap[keyboardKey]?.let {
@@ -67,8 +73,9 @@ fun KeyboardKey(
                         interactionSource = interactionSource,
                         keyboardKey = keyboardKey,
                         drawable = it,
-                        isCaps = isCaps,
-                        pressed = pressed
+                        keyboardState = keyboardState,
+                        keyColor = keyColor,
+                        textColor = textColor
                     )
                 }
             } else {
@@ -83,14 +90,14 @@ fun KeyboardKey(
                                     .length
                             )
                         }
-                        .background(Color.White)
+                        .background(keyColor)
                         .padding(
                             top = 14.dp,
                             bottom = 14.dp
                         ),
                     text = keyboardKey,
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
+                    color = textColor,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -105,7 +112,7 @@ fun KeyboardKey(
                             ),
                         text = keyboardKey,
                         textAlign = TextAlign.Center,
-                        color = Color.Blue,
+                        color = keyColor,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -124,38 +131,59 @@ fun KeyboardIcon(
     interactionSource: MutableInteractionSource,
     keyboardKey: String,
     drawable: Int,
-    isCaps: MutableState<IsCaps>,
-    pressed: State<Boolean>
+    keyboardState: MutableState<KeyboardState>,
+    keyColor: Color = Color.Blue,
+    textColor: Color = Color.Black
 ) {
     Icon(
         modifier = modifier
             .fillMaxWidth()
             .clickable(
-                interactionSource = interactionSource, indication = rememberRipple(
+                interactionSource = interactionSource,
+                indication = rememberRipple(
                     bounded = true,
                     radius = 250.dp,
-                    color = Color.Green
+                    color = keyColor,
                 ),
             ) {
+                val currentInputConnection = (ctx as KeyboardService).currentInputConnection
                 when (keyboardKey) {
-                    " " -> {
-                        (ctx as KeyboardService).currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN,KeyEvent.KEYCODE_SPACE))
+                    " " -> { currentInputConnection.sendKeyEvent(
+                            KeyEvent(
+                                KeyEvent.ACTION_DOWN,
+                                KeyEvent.KEYCODE_SPACE
+                            )
+                        )
                     }
                     "Shift" -> {
-                        isCaps.value = IsCaps.DOUBLECAPS
+                        keyboardState.value = KeyboardState.DOUBLECAPS
                     }
                     "SHIFT" -> {
-                        isCaps.value = IsCaps.NOCAPS
+                        keyboardState.value = KeyboardState.NOCAPS
                     }
                     "shift" -> {
-                        isCaps.value = IsCaps.CAPS
+                        keyboardState.value = KeyboardState.CAPS
                     }
                     "delete" -> {
-                           (ctx as KeyboardService).currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL))
+                        CoroutineScope(Dispatchers.IO).launch {
+                            currentInputConnection.sendKeyEvent(
+                                KeyEvent(
+                                    KeyEvent.ACTION_DOWN,
+                                    KeyEvent.KEYCODE_DEL
+                                )
+                            )
+                        }
                     }
                     "enter" -> {
-                        (ctx as KeyboardService).currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER))
+                        currentInputConnection.sendKeyEvent(
+                            KeyEvent(
+                                KeyEvent.ACTION_DOWN,
+                                KeyEvent.KEYCODE_ENTER
+                            )
+                        )
                     }
+                    "123" -> keyboardState.value = KeyboardState.NUMBER
+                    "ABC" -> keyboardState.value = KeyboardState.STRING
                 }
             }
             .padding(2.dp)
@@ -164,6 +192,7 @@ fun KeyboardIcon(
                 bottom = 14.dp
             ),
         painter = painterResource(id = drawable),
-        contentDescription = "Send icon"
+        contentDescription = "Send icon",
+        tint = textColor
     )
 }

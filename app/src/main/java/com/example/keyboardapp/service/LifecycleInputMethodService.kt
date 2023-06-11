@@ -10,6 +10,7 @@ abstract class LifecycleInputMethodService: InputMethodService(), LifecycleOwner
 
     val dispatcher = ServiceLifecycleDispatcher(this)
 
+
     override fun onCreate() {
         dispatcher.onServicePreSuperOnCreate()
         super.onCreate()

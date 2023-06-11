@@ -3,6 +3,7 @@ package com.example.keyboardapp.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -31,6 +32,7 @@ fun MainScreen(
         val openDialog = remember { mutableStateOf(false) }
 
         Button(
+            shape = RoundedCornerShape(50),
             onClick = {
                 openDialog.value = true
                 onButtonClicked.invoke()

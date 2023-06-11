@@ -3,6 +3,7 @@ package com.example.keyboardapp.ui.screens.keyboard
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.AbstractComposeView
+import com.example.keyboardapp.utils.stringToColor
 
 class ComposeKeyboardView(context: Context): AbstractComposeView(context) {
     /**
@@ -13,6 +14,17 @@ class ComposeKeyboardView(context: Context): AbstractComposeView(context) {
      */
     @Composable
     override fun Content() {
-        KeyboardScreen()
+        val pre = context.getSharedPreferences("keyboard_color", Context.MODE_PRIVATE)
+        val background = pre.getString("background", "White")
+        val key = pre.getString("key", "White")
+        val text = pre.getString("text", "White")
+        val backgroundColor = background?.stringToColor()!!
+        val keyColor = key?.stringToColor()!!
+        val textColor = text?.stringToColor()!!
+        KeyboardScreen(
+            backgroundColor = backgroundColor,
+            keyColor = keyColor,
+            textColor = textColor
+        )
     }
 }

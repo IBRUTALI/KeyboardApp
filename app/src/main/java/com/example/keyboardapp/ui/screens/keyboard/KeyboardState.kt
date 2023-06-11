@@ -1,7 +1,9 @@
 package com.example.keyboardapp.ui.screens.keyboard
 
-enum class IsCaps {
+enum class KeyboardState {
     NOCAPS,
     CAPS,
-    DOUBLECAPS
+    DOUBLECAPS,
+    NUMBER,
+    STRING
 }

@@ -1,12 +1,14 @@
 package com.example.keyboardapp.service
 
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.lifecycle.*
 import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.example.keyboardapp.ui.screens.keyboard.ComposeKeyboardView
+
 
 class KeyboardService: LifecycleInputMethodService(),
     ViewModelStoreOwner,
@@ -23,10 +25,14 @@ class KeyboardService: LifecycleInputMethodService(),
         return view
     }
 
+    override fun onStartInputView(attribute: EditorInfo?, restarting: Boolean) {
+        super.onStartInputView(attribute, restarting)
+        setInputView(onCreateInputView())
+    }
+
     override fun onCreate() {
         super.onCreate()
         savedStateRegistryController.performRestore(null)
-
     }
 
     override val viewModelStore: ViewModelStore
