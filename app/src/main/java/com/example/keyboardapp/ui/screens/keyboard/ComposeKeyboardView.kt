@@ -17,7 +17,7 @@ class ComposeKeyboardView(context: Context): AbstractComposeView(context) {
         val pre = context.getSharedPreferences("keyboard_color", Context.MODE_PRIVATE)
         val background = pre.getString("background", "White")
         val key = pre.getString("key", "White")
-        val text = pre.getString("text", "White")
+        val text = pre.getString("text", "Black")
         val backgroundColor = background?.stringToColor()!!
         val keyColor = key?.stringToColor()!!
         val textColor = text?.stringToColor()!!
