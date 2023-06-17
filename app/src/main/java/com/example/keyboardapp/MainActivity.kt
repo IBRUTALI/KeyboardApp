@@ -1,11 +1,9 @@
 package com.example.keyboardapp
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
-import android.text.TextUtils
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

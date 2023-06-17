@@ -16,4 +16,6 @@
     <string name="change_color">Change color</string>
     <string name="enter_somehting">Enter something:)</string>
     <string name="key_icon">Key icon</string>
+    <string name="name_english_ime">English</string>
+    <string name="name_russian_ime">Russian</string>
 </resources>

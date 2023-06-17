@@ -57,7 +57,7 @@ fun KeyboardScreen(
     }
     Column(
         modifier = modifier
-            .background(backgroundColor)
+            .background(keyColor)
             .fillMaxWidth()
     ) {
         keysArray.forEach { row ->
@@ -65,31 +65,22 @@ fun KeyboardScreen(
                 Row(modifier) {
                     row.forEach { key ->
 
-                        when (key) {
-                            " " -> KeyboardKey(
-                                keyboardKey = key,
-                                modifier = modifier.weight(3.54f),
-                                keyboardState = keyboardState,
-                                keyColor = keyColor,
-                                textColor = textColor
-                            )
-                            "enter" -> KeyboardKey(
-                                keyboardKey = key,
-                                modifier = modifier.weight(2f),
-                                keyboardState = keyboardState,
-                                keyColor = keyColor,
-                                textColor = textColor
-                            )
-                            else -> KeyboardKey(
-                                keyboardKey = key,
-                                modifier = modifier.weight(1f),
-                                keyboardState = keyboardState,
-                                keyColor = keyColor,
-                                textColor = textColor
-                            )
+                        val keyModifier = when (key) {
+                            " " -> modifier.weight(3.54f)
+                            "enter" -> modifier.weight(2f)
+                            else -> modifier.weight(1f)
                         }
 
+                        KeyboardKey(
+                            keyboardKey = key,
+                            modifier = keyModifier,
+                            keyboardState = keyboardState,
+                            keyColor = keyColor,
+                            textColor = textColor
+                        )
+
                     }
+
                 }
             }
         }

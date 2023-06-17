@@ -1,19 +1,12 @@
 package com.example.keyboardapp.ui.screens.keyboard
 
 import android.content.Context
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.inputmethod.InputConnection
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.gestures.forEachGesture
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,13 +15,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -185,6 +176,7 @@ fun whenKeyClick(
                     KeyEvent.KEYCODE_SPACE
                 )
             )
+            currentInputConnection.sendKeyEvent(KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_LANGUAGE_SWITCH))
         }
         "Shift" -> {
             keyboardState.value = KeyboardState.DOUBLECAPS

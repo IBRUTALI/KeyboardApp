@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.keyboardapp.R
 import java.util.*
+import kotlin.random.Random
 
 @Composable
 fun TestScreen(
@@ -46,16 +47,28 @@ fun TestScreen(
             modifier = modifier
                 .fillMaxWidth(),
             onClick = {
-                val pre = ctx.getSharedPreferences("keyboard_color", Context.MODE_PRIVATE)
-                val editor = pre.edit()
-                editor.putString("background", "Gray")
-                editor.putString("key", "Blue")
-                editor.putString("text", "White")
-                editor.apply()
+                putColor(ctx)
             },
             shape = RoundedCornerShape(50)
         ) {
-            Text(text = stringResource(R.string.change_color))
+            Text(text = "Random color")
         }
     }
+}
+
+fun putColor(
+    ctx: Context
+) {
+    val array = arrayOf(
+        "Blue",
+        "Red",
+        "Gray"
+    )
+    val random = Random.nextInt(2)
+    val pre = ctx.getSharedPreferences("keyboard_color", Context.MODE_PRIVATE)
+    val editor = pre.edit()
+    editor.putString("background", array[random])
+    editor.putString("key", array[random])
+    editor.putString("text", "White")
+    editor.apply()
 }

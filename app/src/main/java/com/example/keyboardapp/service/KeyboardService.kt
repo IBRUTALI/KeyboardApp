@@ -12,7 +12,7 @@ import com.example.keyboardapp.ui.screens.keyboard.ComposeKeyboardView
 
 class KeyboardService: LifecycleInputMethodService(),
     ViewModelStoreOwner,
-    SavedStateRegistryOwner {
+    SavedStateRegistryOwner{
 
     override fun onCreateInputView(): View {
         val view = ComposeKeyboardView(this)

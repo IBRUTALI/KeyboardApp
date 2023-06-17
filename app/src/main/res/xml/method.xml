@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<input-method xmlns:android="http://schemas.android.com/apk/res/android">
-    <subtype android:imeSubtypeMode="keyboard" />
+<input-method xmlns:android="http://schemas.android.com/apk/res/android"
+    android:supportsSwitchingToNextInputMethod="true">
+    <subtype
+        android:name="@string/name_english_ime"
+        android:imeSubtypeLocale="en_US"
+        android:imeSubtypeMode="keyboard" />
+    <subtype
+        android:name="@string/name_russian_ime"
+        android:imeSubtypeLocale="ru_RU"
+        android:imeSubtypeMode="keyboard" />
 </input-method>
